@@ -490,44 +490,7 @@ const addAudio = (event) => {
   };
 
 // ---------------------------------------------------------------------------------------
-const renderElementContent = (el) => {
-  if (el.type === "text") {
-    return (
-      <div
-        contentEditable
-        suppressContentEditableWarning
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "1px dashed gray",
-          padding: "5px",
-          fontSize: el.fontSize,
-          color: el.color,
-          fontWeight: el.bold ? "bold" : "normal",
-          textAlign: el.align || "left"
-        }}
-      >
-        {el.content}
-      </div>
-    );
-  }
-  if (el.type === "image") {
-    return <img src={el.src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />;
-  }
-  if (el.type === "rectangle" || el.type === "circle") {
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          background: el.color,
-          borderRadius: el.type === "circle" ? "50%" : "0"
-        }}
-      />
-    );
-  }
-};
-// ----------------------------------------------------------
+
 const changeLayout = (layoutType) => {
   const updatedSlides = slides.map(slide => {
     if (slide.id === currentSlide) {
@@ -830,30 +793,9 @@ if (presentMode) {
     <input type="file" accept="image/*" onChange={addImage} />
     <button onClick={addRectangle}>Rectangle</button>
     <button onClick={addCircle}>Circle</button>
+    
    <button onClick={addTable}>Add Table</button>
-{selectedElement !== null && (
-  <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-    <button
-      onClick={() => {
-        const url = prompt("Enter URL to link this element:");
-        if (!url) return;
-        const updatedSlides = slides.map(slide => {
-          if (slide.id === currentSlide) {
-            const newElements = slide.elements.map((el, index) => {
-              if (index === selectedElement) {
-                return { ...el, link: url };
-              }
-              return el;
-            });
-            return { ...slide, elements: newElements };
-          }
-          return slide;
-        });
-        setSlides(updatedSlides);
-      }}
-    >
-      Add Link
-    </button>
+
 
 <button onClick={addChart}>Add Chart</button>
     {/* Images */}
@@ -937,6 +879,7 @@ if (presentMode) {
         <button onClick={addRectangle}>Rectangle</button>
         <button onClick={addCircle}>Circle</button>
         <button onClick={increaseFont}>A+</button>
+        
         <button onClick={decreaseFont}>A-</button>
         <button onClick={toggleBold}>Bold</button>
         <input type="color" onChange={changeColor} />
@@ -1215,7 +1158,29 @@ Gradient
               </div>
             )}
             {/* Object Tools for Selected Element */}
-
+{selectedElement !== null && (
+  <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+    <button
+      onClick={() => {
+        const url = prompt("Enter URL to link this element:");
+        if (!url) return;
+        const updatedSlides = slides.map(slide => {
+          if (slide.id === currentSlide) {
+            const newElements = slide.elements.map((el, index) => {
+              if (index === selectedElement) {
+                return { ...el, link: url };
+              }
+              return el;
+            });
+            return { ...slide, elements: newElements };
+          }
+          return slide;
+        });
+        setSlides(updatedSlides);
+      }}
+    >
+      Add Link
+    </button>
 
     <button
       onClick={() => {
